@@ -23,24 +23,23 @@ class CocktailsAdapter() :
     override fun getItemCount() = listOfCocktails.size
 
     override fun onBindViewHolder(holder: CocktailsHolder, position: Int) {
-        val cocktails: Drink = listOfCocktails[position]
-        holder.cocktailName.text = cocktails.strDrink
-        Glide.with(holder.itemView.context)
-            .load(cocktails.strDrinkThumb.toString())
-            .into(holder.image)
-
-//        GlideToVectorYou
-//            .init()
-//            .with(holder.image.context)
-//            .load(Uri.parse(cocktails.strDrinkThumb),holder.image)
+        holder.bind(listOfCocktails[position])
 
     }
 
-    class CocktailsHolder(
+    inner class CocktailsHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.img_cocktail
-        val cocktailName: TextView = itemView.txt_cocktail_name
+        private var image: ImageView = itemView.img_cocktail
+        private var cocktailName: TextView = itemView.txt_cocktail_name
+        var root: View = itemView.root
+
+        fun bind(drink: Drink) {
+            cocktailName.text = drink.strDrink
+            Glide.with(itemView.context)
+                .load(drink.strDrinkThumb)
+                .into(image)
+        }
     }
 
     fun update(listOfDrinks: MutableList<Drink>) {
