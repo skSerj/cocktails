@@ -20,7 +20,7 @@ class CocktailsFragment : Fragment(), OnCocktailClickListener {
     private val listOfDrinks: MutableList<Drink> = ArrayList()
 
     companion object {
-        val cocktailsAdapter: CocktailsAdapter = CocktailsAdapter()
+        val cocktailsAdapter: CocktailsAdapter = CocktailsAdapter(this.newInstance())
         fun newInstance() = CocktailsFragment()
     }
 

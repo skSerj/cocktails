@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.sourceit.ocktails.network.ApiServiceForCocktailDetails
 import com.sourceit.ocktails.network.model.CocktailDetails
-import com.sourceit.ocktails.network.model.Drink
 import com.sourceit.ocktails.network.model.DrinkDetails
 import kotlinx.android.synthetic.main.fragment_coctail_details.*
 import retrofit2.Call
