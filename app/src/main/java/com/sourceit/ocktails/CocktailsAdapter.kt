@@ -1,10 +1,12 @@
 package com.sourceit.ocktails
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sourceit.ocktails.network.model.Drink
@@ -24,12 +26,12 @@ class CocktailsAdapter() :
 
     override fun onBindViewHolder(holder: CocktailsHolder, position: Int) {
         holder.bind(listOfCocktails[position])
-
     }
 
-    inner class CocktailsHolder(
+    class CocktailsHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
+
         private var image: ImageView = itemView.img_cocktail
         private var cocktailName: TextView = itemView.txt_cocktail_name
         var root: View = itemView.root
@@ -39,6 +41,10 @@ class CocktailsAdapter() :
             Glide.with(itemView.context)
                 .load(drink.strDrinkThumb)
                 .into(image)
+            root.setOnClickListener {
+                Toast.makeText(it.context, drink.idDrink, Toast.LENGTH_SHORT).show()
+                Log.d("MyApp", "you click on item")
+            }
         }
     }
 
@@ -49,4 +55,5 @@ class CocktailsAdapter() :
         }
         notifyDataSetChanged()
     }
+
 }

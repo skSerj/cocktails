@@ -14,7 +14,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_cocktails.*
 
-class CocktailsFragment : Fragment() {
+class CocktailsFragment : Fragment(), OnCocktailClickListener {
 
     private lateinit var disposable: Disposable
     private val listOfDrinks: MutableList<Drink> = ArrayList()
@@ -54,5 +54,12 @@ class CocktailsFragment : Fragment() {
 
     private fun showError(it: Throwable) {
         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCocktailClick(drink: String) {
+        fragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.main_container, CocktailDetailsFragment.newInstance(drink))
+            ?.commit()
     }
 }
