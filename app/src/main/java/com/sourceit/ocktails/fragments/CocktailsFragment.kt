@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sourceit.ocktails.App
 import com.sourceit.ocktails.R
 import com.sourceit.ocktails.adapter.CocktailsAdapter
 import com.sourceit.ocktails.interfaces.ActivityNavigation
@@ -26,6 +27,10 @@ class CocktailsFragment() : Fragment(),
 
     private lateinit var disposable: Disposable
     private val listOfDrinks: MutableList<Drink> = ArrayList()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     companion object {
         val cocktailsAdapter: CocktailsAdapter =
@@ -56,11 +61,22 @@ class CocktailsFragment() : Fragment(),
             layoutManager = LinearLayoutManager(this.context)
         }
 
+        val dao = (view.context as App).db.getCocktailsDao()
+        disposable = dao.selectAll()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            },{
+
+            })
+
         disposable = ApiServiceForListOfCocktails.data
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 listOfDrinks.addAll(it.drinks)
+                dao.insert(it.drinks)
                 showInfo(listOfDrinks)
             }, {
                 showError(it)
