@@ -11,7 +11,7 @@ import io.reactivex.Flowable
 interface CocktailsDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(cocktails: List<Drink>)
+    fun insert(cocktails: CocktailsEntity)
 
     @Query("SELECT * FROM CocktailsEntity")
     fun selectAll(): Flowable<List<CocktailsEntity>>

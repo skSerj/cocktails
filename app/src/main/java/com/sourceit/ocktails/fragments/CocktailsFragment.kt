@@ -1,5 +1,6 @@
 package com.sourceit.ocktails.fragments
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sourceit.ocktails.App
 import com.sourceit.ocktails.R
 import com.sourceit.ocktails.adapter.CocktailsAdapter
+import com.sourceit.ocktails.db.CocktailsEntity
 import com.sourceit.ocktails.interfaces.ActivityNavigation
 import com.sourceit.ocktails.interfaces.OnCocktailClickListener
 import com.sourceit.ocktails.network.ApiServiceForListOfCocktails
@@ -27,6 +29,7 @@ class CocktailsFragment() : Fragment(),
 
     private lateinit var disposable: Disposable
     private val listOfDrinks: MutableList<Drink> = ArrayList()
+    private val listForDB: List<CocktailsEntity> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,22 +64,27 @@ class CocktailsFragment() : Fragment(),
             layoutManager = LinearLayoutManager(this.context)
         }
 
-        val dao = (view.context as App).db.getCocktailsDao()
+        val dao = (activity?.application as App).db.getCocktailsDao()
         disposable = dao.selectAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-            },{
-
+            .subscribe({ it ->
+                it.forEach {
+                    listOfDrinks.addAll(listOf(Drink(it.name, it.strImageURL, it.idDrinkOnServer)))
+                }
+                showInfo(listOfDrinks)
+            }, {
+                it.printStackTrace()
             })
 
         disposable = ApiServiceForListOfCocktails.data
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
+            .subscribe({ it ->
                 listOfDrinks.addAll(it.drinks)
-                dao.insert(it.drinks)
+                listOfDrinks.forEach {
+                    dao.insert(CocktailsEntity(0, it.strDrink, it.strDrinkThumb, it.idDrink))
+                }
                 showInfo(listOfDrinks)
             }, {
                 showError(it)
