@@ -1,4 +1,4 @@
-package com.sourceit.ocktails
+package com.sourceit.ocktails.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.sourceit.ocktails.R
 import com.sourceit.ocktails.network.ApiServiceForCocktailDetails
-import com.sourceit.ocktails.network.model.CocktailDetails
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -27,7 +27,8 @@ class CocktailDetailsFragment(idDrink: String) : Fragment() {
     }
 
     companion object {
-        fun newInstance(idDrink: String) = CocktailDetailsFragment(idDrink)
+        fun newInstance(idDrink: String) =
+            CocktailDetailsFragment(idDrink)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

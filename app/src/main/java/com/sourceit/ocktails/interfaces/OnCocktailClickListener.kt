@@ -1,4 +1,4 @@
-package com.sourceit.ocktails
+package com.sourceit.ocktails.interfaces
 
 interface OnCocktailClickListener {
     fun onCocktailClick(drink: String)

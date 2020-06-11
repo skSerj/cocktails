@@ -3,12 +3,14 @@ package com.sourceit.ocktails
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.sourceit.ocktails.fragments.CocktailDetailsFragment
+import com.sourceit.ocktails.fragments.CocktailsFragment
+import com.sourceit.ocktails.interfaces.ActivityNavigation
 import com.sourceit.ocktails.network.model.Drink
 import io.reactivex.disposables.Disposable
 
-class MainActivity : AppCompatActivity(), ActivityNavigation {
-    private lateinit var disposable: Disposable
-    private val listOfDrinks: MutableList<Drink> = ArrayList()
+class MainActivity : AppCompatActivity(),
+    ActivityNavigation {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

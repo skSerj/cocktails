@@ -1,4 +1,4 @@
-package com.sourceit.ocktails
+package com.sourceit.ocktails.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.sourceit.ocktails.R
+import com.sourceit.ocktails.interfaces.OnCocktailClickListener
 import com.sourceit.ocktails.network.model.Drink
 import kotlinx.android.synthetic.main.item_cocktails.view.*
 
@@ -19,7 +21,10 @@ class CocktailsAdapter(private val listener: OnCocktailClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailsHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_cocktails, parent, false)
-        return CocktailsHolder(v, listener)
+        return CocktailsHolder(
+            v,
+            listener
+        )
     }
 
     override fun getItemCount() = listOfCocktails.size
@@ -43,7 +48,6 @@ class CocktailsAdapter(private val listener: OnCocktailClickListener) :
                 .load(drink.strDrinkThumb)
                 .into(image)
             root.setOnClickListener {
-                Toast.makeText(it.context, drink.idDrink, Toast.LENGTH_SHORT).show()
                 Log.d("MyApp", "you click on item")
                 listener.onCocktailClick(drink.idDrink)
             }

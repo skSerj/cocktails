@@ -1,4 +1,4 @@
-package com.sourceit.ocktails
+package com.sourceit.ocktails.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sourceit.ocktails.R
+import com.sourceit.ocktails.adapter.CocktailsAdapter
+import com.sourceit.ocktails.interfaces.ActivityNavigation
+import com.sourceit.ocktails.interfaces.OnCocktailClickListener
 import com.sourceit.ocktails.network.ApiServiceForListOfCocktails
 import com.sourceit.ocktails.network.model.Drink
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,13 +21,16 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_cocktails.*
 import java.lang.IllegalArgumentException
 
-class CocktailsFragment() : Fragment(), OnCocktailClickListener {
+class CocktailsFragment() : Fragment(),
+    OnCocktailClickListener {
 
     private lateinit var disposable: Disposable
     private val listOfDrinks: MutableList<Drink> = ArrayList()
 
     companion object {
-        val cocktailsAdapter: CocktailsAdapter = CocktailsAdapter(this.newInstance())
+        val cocktailsAdapter: CocktailsAdapter =
+            CocktailsAdapter(newInstance())
+
         fun newInstance() = CocktailsFragment()
         private var navigation: ActivityNavigation? = null
     }
@@ -39,13 +46,13 @@ class CocktailsFragment() : Fragment(), OnCocktailClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_cocktails, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_cocktails, container, false)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         cocktails_list.apply {
-            adapter = cocktailsAdapter
+            adapter =
+                cocktailsAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
 
@@ -71,7 +78,6 @@ class CocktailsFragment() : Fragment(), OnCocktailClickListener {
 
     override fun onCocktailClick(drink: String) {
         Log.d("Fragment", "interface is OK")
-        val interest = navigation
         navigation?.showFragmentWithCocktailDetails(drink)
     }
 }
