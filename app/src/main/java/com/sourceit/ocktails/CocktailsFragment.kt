@@ -1,6 +1,8 @@
 package com.sourceit.ocktails
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +15,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_cocktails.*
+import java.lang.IllegalArgumentException
 
-class CocktailsFragment : Fragment(), OnCocktailClickListener {
+class CocktailsFragment() : Fragment(), OnCocktailClickListener {
 
     private lateinit var disposable: Disposable
     private val listOfDrinks: MutableList<Drink> = ArrayList()
@@ -22,6 +25,16 @@ class CocktailsFragment : Fragment(), OnCocktailClickListener {
     companion object {
         val cocktailsAdapter: CocktailsAdapter = CocktailsAdapter(this.newInstance())
         fun newInstance() = CocktailsFragment()
+        private var navigation: ActivityNavigation? = null
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ActivityNavigation) {
+            navigation = context as ActivityNavigation
+        } else {
+            throw IllegalArgumentException(context::class.java.name + "Error")
+        }
     }
 
     override fun onCreateView(
@@ -57,9 +70,8 @@ class CocktailsFragment : Fragment(), OnCocktailClickListener {
     }
 
     override fun onCocktailClick(drink: String) {
-        fragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.main_container, CocktailDetailsFragment.newInstance(drink))
-            ?.commit()
+        Log.d("Fragment", "interface is OK")
+        val interest = navigation
+        navigation?.showFragmentWithCocktailDetails(drink)
     }
 }

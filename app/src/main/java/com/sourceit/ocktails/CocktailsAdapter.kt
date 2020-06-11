@@ -35,7 +35,7 @@ class CocktailsAdapter(private val listener: OnCocktailClickListener) :
 
         private var image: ImageView = itemView.img_cocktail
         private var cocktailName: TextView = itemView.txt_cocktail_name
-        var root: View = itemView.root
+        private var root: View = itemView.root
 
         fun bind(drink: Drink) {
             cocktailName.text = drink.strDrink
